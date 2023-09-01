@@ -17,9 +17,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         initRecyclerView()
         viewModel = obtainViewModel(this@MainActivity)
-        viewModel.getPopularMovies()
-        viewModel.observeMovieLiveData().observe(this) { movieList ->
-            movieAdapter.setMovieList(movieList)
+        viewModel.getAllMovies().observe(this) { movieList ->
+            if (movieList.isNotEmpty()) {
+                movieAdapter.setMovieList(movieList)
+            } else {
+                viewModel.getPopularMovies()
+            }
         }
     }
     private fun initRecyclerView() {

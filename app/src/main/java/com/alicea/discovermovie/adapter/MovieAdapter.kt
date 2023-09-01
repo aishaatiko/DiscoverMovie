@@ -4,15 +4,15 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.alicea.discovermovie.database.Movie
+import com.alicea.discovermovie.database.SavedMovie
 import com.alicea.discovermovie.databinding.MovieLayoutBinding
 import com.bumptech.glide.Glide
 
 class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
-    private var movieList = ArrayList<Movie>()
+    private var movieList = ArrayList<SavedMovie>()
     @SuppressLint("NotifyDataSetChanged")
-    fun setMovieList(movieList : List<Movie>) {
-        this.movieList = movieList as ArrayList<Movie>
+    fun setMovieList(movieList : List<SavedMovie>) {
+        this.movieList = movieList as ArrayList<SavedMovie>
         notifyDataSetChanged()
     }
 
