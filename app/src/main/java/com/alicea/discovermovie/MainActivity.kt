@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initRecyclerView()
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        viewModel = obtainViewModel(this@MainActivity)
         viewModel.getPopularMovies()
         viewModel.observeMovieLiveData().observe(this) { movieList ->
             movieAdapter.setMovieList(movieList)
@@ -28,5 +28,9 @@ class MainActivity : AppCompatActivity() {
             layoutManager = GridLayoutManager(applicationContext, 1)
             adapter = movieAdapter
         }
+    }
+    private fun obtainViewModel(activity: AppCompatActivity): MainViewModel {
+        val factory = ViewModelFactory.getInstance(activity.application)
+        return ViewModelProvider(activity, factory)[MainViewModel::class.java]
     }
 }
