@@ -14,8 +14,8 @@ interface MovieDao {
     fun insert(movie: List<SavedMovie>)
     @Update
     fun update(movie: List<SavedMovie>)
-    @Delete
-    fun delete(movie: List<SavedMovie>)
+    @Query("DELETE from savedmovie")
+    fun delete()
     @Query("SELECT * from savedmovie ORDER BY id ASC")
     fun getAllMovies(): LiveData<List<SavedMovie>>
 }

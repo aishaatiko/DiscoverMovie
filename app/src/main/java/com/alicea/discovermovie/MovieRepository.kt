@@ -20,8 +20,8 @@ class MovieRepository(application: Application) {
     fun insert(movie: List<SavedMovie>) {
         executorService.execute { movieDao.insert(movie) }
     }
-    fun delete(movie: List<SavedMovie>) {
-        executorService.execute { movieDao.delete(movie) }
+    fun delete() {
+        executorService.execute { movieDao.delete() }
     }
     fun update(movie: List<SavedMovie>) {
         executorService.execute { movieDao.update(movie) }

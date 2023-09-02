@@ -16,6 +16,7 @@ import retrofit2.Response
 class MainViewModel(application: Application) : ViewModel() {
     private val movieRepository: MovieRepository = MovieRepository(application)
     private var movieLiveData = MutableLiveData<List<Movie>>()
+    private var savedMovieLiveData = MutableLiveData<List<SavedMovie>>()
     private val token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzNjkyOTg4NzhkNWVhODI0NjUzODgxNzU2NjM4NjNlNiIsInN1YiI6IjVjNDY4NjA2MGUwYTI2NDk0ZGM4ODQ2OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.EchfjPLbZS8Ff8GKw6vk92DybkNGIUQqywPUGpaIKCg"
 
     fun getPopularMovies() {
@@ -23,7 +24,7 @@ class MainViewModel(application: Application) : ViewModel() {
             .enqueue(object : Callback<ResultMovies> {
                 override fun onResponse(call: Call<ResultMovies>, response: Response<ResultMovies>) {
                     if (response.body()!=null) {
-                        movieLiveData.value = response.body()!!.results.take(10)
+                        movieLiveData.value = response.body()!!.results
                         val savedMovie = movieLiveData.value!!.map {
                             SavedMovie(
                                 title = it.title,
@@ -31,7 +32,7 @@ class MainViewModel(application: Application) : ViewModel() {
                                 release_date = it.release_date
                             )
                         }
-                        insert(savedMovie)
+                        insert(savedMovie.subList(0,10))
                     } else {
                         return
                     }
@@ -43,12 +44,14 @@ class MainViewModel(application: Application) : ViewModel() {
 
             })
     }
+
     fun insert(movie: List<SavedMovie>) {
+        delete()
         movieRepository.insert(movie)
+    }
+    private fun delete() {
+        movieRepository.delete()
     }
     fun getAllMovies(): LiveData<List<SavedMovie>> = movieRepository.getAllMovies()
 
-    fun observeMovieLiveData() : LiveData<List<Movie>> {
-        return movieLiveData
-    }
 }
